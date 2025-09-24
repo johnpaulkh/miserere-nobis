@@ -1,6 +1,12 @@
 export type Product = {
+    id: string,
     name: string;
-    variant: string;
-    price: number;
-    cogs: number;
-};
+    variants: Variant[];
+}
+
+export type Variant = {
+    id: string,
+    name: string,
+    price: number,
+    cogs: number,
+}

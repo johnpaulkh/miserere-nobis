@@ -9,7 +9,7 @@ type AddProductModalProps = {
 };
 
 export default function AddProductModal({ show, onHide, onAdd }: AddProductModalProps) {
-    const [form, setForm] = useState({ name: "", variant: "", price: "", cogs: "" });
+    const [form, setForm] = useState({ id: "", name: "", variantCount: 0 });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -17,12 +17,11 @@ export default function AddProductModal({ show, onHide, onAdd }: AddProductModal
 
     const handleSubmit = () => {
         onAdd({
+            id: form.id,
             name: form.name,
-            variant: form.variant,
-            price: Number(form.price),
-            cogs: Number(form.cogs),
+            variantCount: form.variantCount
         });
-        setForm({ name: "", variant: "", price: "", cogs: "" });
+        setForm({ id: "", name: "", variantCount: 0 });
         onHide();
     };
 
@@ -38,16 +37,8 @@ export default function AddProductModal({ show, onHide, onAdd }: AddProductModal
                         <Form.Control name="name" value={form.name} onChange={handleChange} />
                     </Form.Group>
                     <Form.Group className="mb-3">
-                        <Form.Label>Variant</Form.Label>
-                        <Form.Control name="variant" value={form.variant} onChange={handleChange} />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Price</Form.Label>
-                        <Form.Control type="number" name="price" value={form.price} onChange={handleChange} />
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>COGS</Form.Label>
-                        <Form.Control type="number" name="cogs" value={form.cogs} onChange={handleChange} />
+                        <Form.Label>Jumlah Variant</Form.Label>
+                        <Form.Control name="variantCount" value={form.variantCount} onChange={handleChange} />
                     </Form.Group>
                 </Form>
             </Modal.Body>
