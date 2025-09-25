@@ -1,5 +1,8 @@
-import {Col, ListGroup, Row} from "react-bootstrap";
+import {Button, Col, Container, ListGroup, Row} from "react-bootstrap";
 import type {Variant} from "../../entity/Product.tsx";
+import {BsFillPencilFill} from "react-icons/bs";
+import VariantAddButton from "./VariantAddButton.tsx";
+import Currency from "../../utils/Currency.tsx";
 
 type VariantListProps = {
     variants: Variant[],
@@ -8,15 +11,25 @@ type VariantListProps = {
 export default function VariantList({variants}: VariantListProps) {
     return (
         <ListGroup.Item>
-            {variants.map((v) =>
-                <Row action>
-                    <Col>
-                        Nama Variant : <strong>{v.name}</strong> <br/>
-                        <small className="text-muted">harga jual : {v.price}</small> <br/>
-                        <small className="text-muted">harga beli : {v.cogs}</small>
-                    </Col>
-                </Row>
-            )}
+            <Container>
+                {variants.map((v) =>
+                    <ListGroup.Item action>
+                        <Row>
+                            <Col>
+                                <strong>{v.name}</strong> <br/>
+                                <small className="text-muted">harga jual : <Currency value={v.price} /></small> <br/>
+                                <small className="text-muted">harga beli : <Currency value={v.cogs} /></small>
+                            </Col>
+                            <Col xs="auto">
+                                <Button variant="outline-primary">
+                                    <BsFillPencilFill /> Edit
+                                </Button>
+                            </Col>
+                        </Row>
+                    </ListGroup.Item>
+                )}
+                <VariantAddButton/>
+            </Container>
         </ListGroup.Item>
     )
 }

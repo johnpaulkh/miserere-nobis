@@ -19,7 +19,7 @@ export default function AddProductModal({ show, onHide, onAdd }: AddProductModal
         onAdd({
             id: form.id,
             name: form.name,
-            variantCount: form.variantCount
+            variants: []
         });
         setForm({ id: "", name: "", variantCount: 0 });
         onHide();

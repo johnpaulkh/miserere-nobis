@@ -22,7 +22,7 @@ export default function ProductList({products}: ProductListProp) {
                     <ListGroup.Item action onClick={() => toggleExpand(p.id)}>
                         <Row>
                             <Col>
-                                <strong>{p.name}</strong> <br/>
+                                <strong className="h4">{p.name}</strong> <br/>
                                 <small className="text-muted">Jumlah Variant: {p.variants.length}</small>
                             </Col>
                         </Row>
