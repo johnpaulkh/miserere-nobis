@@ -1,7 +1,7 @@
 import {Col, ListGroup, Row} from "react-bootstrap";
 import type {Product} from "../../entity/Product.tsx";
 import React, {useState} from "react";
-import VariantList from "./VariantList.tsx";
+import VariantList from "./variant/VariantList.tsx";
 
 type ProductListProp = {
     products: Product[];
