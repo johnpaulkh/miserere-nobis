@@ -1,82 +1,55 @@
 import {Container} from "react-bootstrap";
-import AddProductModal from "./AddProductModal.tsx";
-import {useState} from "react";
-import type {Product} from "../../entity/Product.tsx";
-import AddButton from "../../components/AddButton.tsx";
+import {useCallback, useEffect, useState} from "react";
+import type {Product} from "../../entity/Product.ts";
 import ProductList from "./ProductList.tsx";
+import {fetchProducts} from "../../service/ProductService.ts";
 
-const initialProducts: Product[] = [
-    {
-        id: "VAR-001",
-        name: "Sapo Tinggi",
-        variants: [
-            {
-                id: "VAR-001-001",
-                name: "ST-001",
-                price: 109200,
-                cogs: 87000,
-            },
-            {
-                id: "VAR-001-002",
-                name: "ST-002",
-                price: 129200,
-                cogs: 107000,
-            },
-            {
-                id: "VAR-001-003",
-                name: "ST-003",
-                price: 159200,
-                cogs: 127000,
-            },
-        ],
-    },
-    {
-        id: "VAR-002",
-        name: "Sapo Ceper",
-        variants: [
-            {
-                id: "VAR-002-001",
-                name: "SP-001",
-                price: 109200,
-                cogs: 87000,
-            },
-            {
-                id: "VAR-002-002",
-                name: "SP-002",
-                price: 129200,
-                cogs: 107000,
-            },
-            {
-                id: "VAR-002-003",
-                name: "SP-003",
-                price: 159200,
-                cogs: 127000,
-            },
-        ],
-    }
-]
+const useFetchProducts = () => {
+    const [products, setProducts] = useState<Product[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    const loadProducts = useCallback(async () => {
+        try {
+            const fetchedProducts = await fetchProducts();
+            const products = fetchedProducts?.data ?? []
+            setProducts(products);
+            setError(null);
+        } catch (err) {
+            // If fetchAllProducts throws an error, catch it here
+            console.error("Error in loadProducts:", err);
+            setError(err instanceof Error ? err.message : "Terjadi kesalahan yang tidak diketahui.");
+            setProducts([]);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        loadProducts().then();
+    }, [loadProducts]);
+
+    // Return the state variables and the setter function
+    return { products, isLoading, error, setProducts, refreshProducts: loadProducts };
+};
 
 export default function ProductPage() {
-    const [products, setProducts] = useState(initialProducts);
-    const [showModal, setShowModal] = useState(false);
+    const { products, isLoading, error, refreshProducts } = useFetchProducts();
 
-    const handleAddProduct = (p: Product) => setProducts([...products, p]);
+    if (isLoading) {
+        return <Container className="py-4"><p>Memuat produk...</p></Container>;
+    }
+
+    if (error) {
+        return <Container className="py-4"><p className="text-danger">{error}</p></Container>;
+    }
 
     return (
         <Container className="py-4">
             <h2 className="mb-3">Daftar Produk</h2>
             <ProductList
                 products={products}
-            />
-
-            <AddButton
-                onClick={() => setShowModal(true)}
-            />
-
-            <AddProductModal
-                show={showModal}
-                onHide={() => setShowModal(false)}
-                onAdd={handleAddProduct}
+                refreshProduct={refreshProducts}
             />
         </Container>
     );

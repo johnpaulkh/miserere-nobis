@@ -1,11 +1,12 @@
 export type Product = {
-    id: string,
+    id: string | null,
     name: string;
     variants: Variant[];
 }
 
 export type Variant = {
-    id: string,
+    id: string | null,
+    productId: string | null,
     name: string,
     price: number,
     cogs: number,
