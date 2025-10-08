@@ -118,18 +118,18 @@ export default function VariantList({variants, refreshProduct}: VariantListProps
                             </Row>
                         </ListGroup.Item>
                 )}
-                {showAddVariantRow &&
-                    <VariantAddRow
+                {showAddVariantRow
+                    ? <VariantAddRow
                         key={"variant-add-row"}
                         productId={variants[0].productId ?? ""}
                         onCancel={() => setShowAddVariantRow(false)}
                         refreshProduct={refreshProduct}/>
+                    : <VariantAddButton
+                        onClick={() => {
+                            setShowAddVariantRow(true)
+                        }}
+                    />
                 }
-                <VariantAddButton
-                    onClick={() => {
-                        setShowAddVariantRow(true)
-                    }}
-                />
             </Container>
         </ListGroup.Item>
     )

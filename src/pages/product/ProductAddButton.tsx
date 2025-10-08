@@ -1,16 +1,17 @@
-import {Col, Container, ListGroup, Row} from "react-bootstrap";
+import {Button, Col, ListGroup, Row} from "react-bootstrap";
 import {BsPlusCircle} from "react-icons/bs";
 
 type ProductAddButtonProps = {
     onClick: () => void
 }
 
-export default function ProductAddButton({onClick} : ProductAddButtonProps) {
+export default function ProductAddButton({onClick}: ProductAddButtonProps) {
     return (
-        <ListGroup.Item action style={{ backgroundColor: '#de6a70' }} onClick={onClick}>
+        <ListGroup.Item>
             <Row className="justify-content-center">
                 <Col xs={"auto"}>
-                    <Container>Tambah Produk <BsPlusCircle/></Container>
+                    <Button style={{backgroundColor: '#de6a70'}} onClick={onClick}>Tambah
+                        Produk <BsPlusCircle/></Button>
                 </Col>
             </Row>
         </ListGroup.Item>
