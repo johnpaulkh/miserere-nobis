@@ -3,10 +3,9 @@ import type {Sales} from "../../entity/Sale.ts";
 
 type SalesListProps = {
     sales: Sales[];
-    refreshSales: () => void
 }
 
-export default function SalesList({sales, refreshSales}: SalesListProps) {
+export default function SalesList({sales}: SalesListProps) {
     return (
         <ListGroup>
             <ListGroup.Item>

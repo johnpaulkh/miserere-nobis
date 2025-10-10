@@ -1,37 +1,9 @@
 import {Col, Container, Row} from "react-bootstrap";
-import {useCallback, useEffect, useState} from "react";
-import type {Product} from "../../entity/Product.ts";
+import {useState} from "react";
 import ProductList from "./ProductList.tsx";
-import {fetchProducts} from "../../service/ProductService.ts";
 import ProductAddButton from "./ProductAddButton.tsx";
 import ProductAddModal from "./ProductAddModal.tsx";
-
-const useFetchProducts = () => {
-    const [products, setProducts] = useState<Product[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-
-    const loadProducts = useCallback(async () => {
-        try {
-            const fetchedProducts = await fetchProducts();
-            const products = fetchedProducts?.data ?? []
-            setProducts(products);
-            setError(null);
-        } catch (err) {
-            console.error("Error in loadProducts:", err);
-            setError(err instanceof Error ? err.message : "Terjadi kesalahan yang tidak diketahui.");
-            setProducts([]);
-        } finally {
-            setIsLoading(false);
-        }
-    }, []);
-
-    useEffect(() => {
-        loadProducts().then();
-    }, [loadProducts]);
-
-    return {products, isLoading, error, setProducts, refreshProducts: loadProducts};
-};
+import {useFetchProducts} from "../../manager/ProductManager.ts";
 
 export default function ProductPage() {
     const {products, isLoading, error, refreshProducts} = useFetchProducts();
