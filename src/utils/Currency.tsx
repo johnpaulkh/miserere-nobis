@@ -4,12 +4,18 @@ const formatter = new Intl.NumberFormat('id-ID', {
     minimumFractionDigits: 0 // Optional: removes the trailing ",00"
 });
 
+const noCurrencyFormatter = Intl.NumberFormat('de-DE');
+
 type CurrencyProps = {
     value: number,
+    showCurrency?: boolean,
 }
 
-export default function Currency({value} : CurrencyProps) {
+export default function Currency({value, showCurrency = false} : CurrencyProps) {
     return (
-        <>{formatter.format(value)}</>
+        <>{showCurrency
+            ? formatter.format(value)
+            : noCurrencyFormatter.format(value)
+        }</>
     )
 }

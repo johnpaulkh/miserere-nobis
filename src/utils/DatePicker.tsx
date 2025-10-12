@@ -4,13 +4,15 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 type DatePickerProps = {
+    name: string,
     selectedDate: Date,
     onChange: (date: Date | null) => void,
 }
 
-export default function DefaultDatePicker({selectedDate, onChange}: DatePickerProps) {
+export default function DefaultDatePicker({name, selectedDate, onChange}: DatePickerProps) {
     return (
         <DatePicker
+            name={name}
             selected={selectedDate}
             onChange={onChange}
             locale={id}

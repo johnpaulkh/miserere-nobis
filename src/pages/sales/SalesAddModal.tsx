@@ -14,16 +14,6 @@ type SalesAddModalProps = {
     refreshSales: () => void,
 }
 
-type SalesDetailForm = {
-    productId: string,
-    productName: string,
-    variantId: string,
-    variantName: string,
-    quantity: number,
-    price: number,
-    cogs: number,
-}
-
 type SalesForm = {
     customer: string,
     address: string,
@@ -38,17 +28,23 @@ type SalesDetail = {
     quantity: number,
     price: number,
     cogs: number,
+    adminFee: number,
+    packingFee: number,
+    packingFeePaid: number,
 }
 
 export default function SalesAddModal({show, onCancel, refreshSales}: SalesAddModalProps) {
-    const [salesDetailForm, setSalesDetailForm] = useState<SalesDetailForm>({
+    const [salesDetailForm, setSalesDetailForm] = useState<SalesDetail>({
         productId: "",
         productName: "",
         variantId: "",
         variantName: "",
         quantity: 0,
         price: 0,
-        cogs: 0
+        cogs: 0,
+        adminFee: 0,
+        packingFee: 0,
+        packingFeePaid: 0,
     });
     const [salesForm, setSalesForm] = useState<SalesForm>({customer: "", address: "", logistic: ""})
     const [salesDetails] = useState<SalesDetail[]>([])
@@ -67,6 +63,9 @@ export default function SalesAddModal({show, onCancel, refreshSales}: SalesAddMo
                 quantity: sd.quantity,
                 price: sd.price,
                 cogs: sd.cogs,
+                adminFee: sd.adminFee,
+                packingFee: sd.packingFee,
+                packingFeePaid: sd.packingFeePaid,
             }))
         })
         refreshSales();
@@ -128,6 +127,9 @@ export default function SalesAddModal({show, onCancel, refreshSales}: SalesAddMo
             quantity: salesDetailForm.quantity,
             price: salesDetailForm.price,
             cogs: salesDetailForm.cogs,
+            adminFee: salesDetailForm.adminFee,
+            packingFee: salesDetailForm.packingFee,
+            packingFeePaid: salesDetailForm.packingFeePaid,
         };
 
         salesDetails.push(salesDetail);
@@ -138,7 +140,10 @@ export default function SalesAddModal({show, onCancel, refreshSales}: SalesAddMo
             variantName: "",
             quantity: 0,
             price: 0,
-            cogs: 0
+            cogs: 0,
+            adminFee: 0,
+            packingFee: 0,
+            packingFeePaid: 0,
         })
     }
 
@@ -202,6 +207,27 @@ export default function SalesAddModal({show, onCancel, refreshSales}: SalesAddMo
                                 <Form.Label column sm={3}>Harga Jual</Form.Label>
                                 <Col sm={9}>
                                     <Form.Control name="quantity" value={salesDetailForm.price}
+                                                  onChange={handleSalesDetailFormChange}/>
+                                </Col>
+                            </Form.Group>
+                            <Form.Group as={Row} className="mb-3">
+                                <Form.Label column sm={3}>Biaya Admin</Form.Label>
+                                <Col sm={9}>
+                                    <Form.Control name="adminFee" value={salesDetailForm.adminFee}
+                                                  onChange={handleSalesDetailFormChange}/>
+                                </Col>
+                            </Form.Group>
+                            <Form.Group as={Row} className="mb-3">
+                                <Form.Label column sm={3}>Biaya Pengemasan</Form.Label>
+                                <Col sm={9}>
+                                    <Form.Control name="packingFee" value={salesDetailForm.packingFee}
+                                                  onChange={handleSalesDetailFormChange}/>
+                                </Col>
+                            </Form.Group>
+                            <Form.Group as={Row} className="mb-3">
+                                <Form.Label column sm={3}>Pengemasan Dibayar</Form.Label>
+                                <Col sm={9}>
+                                    <Form.Control name="packingFeePaid" value={salesDetailForm.packingFeePaid}
                                                   onChange={handleSalesDetailFormChange}/>
                                 </Col>
                             </Form.Group>

@@ -7,6 +7,9 @@ export interface SalesDetail {
     price: number;
     cogs: number;
     quantity: number;
+    adminFee: number;
+    packingFee: number;
+    packingFeePaid: number;
 }
 
 export interface SalesAddOn {
