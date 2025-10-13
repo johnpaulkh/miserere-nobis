@@ -93,14 +93,10 @@ function summaryTable(salesSummary: SalesSummary | null) {
 function dailySummaryTable(salesSummary: SalesSummary | null) {
     if (salesSummary === null || salesSummary.dailySummaries === undefined) return <></>
 
-    const dailySummaryEntries = new Map(Object.entries(salesSummary.dailySummaries));
-
-    const sortedEntriesArray = Array.from(dailySummaryEntries.entries()).sort((a, b) => {
-        return a[0].localeCompare(b[0]);
-    });
-
-// 3. Create a new Map from the sorted array
-    const sortedDailySummaryMap = new Map(sortedEntriesArray);
+    const sortedDailySummaryMap = new Map(
+        Object.entries(salesSummary.dailySummaries || {})
+            .sort((a, b) => a[0].localeCompare(b[0]))
+    );
 
     return (
         <table className="table table-sm border rounded-5">

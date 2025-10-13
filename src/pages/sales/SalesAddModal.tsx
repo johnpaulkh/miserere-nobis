@@ -7,6 +7,7 @@ import {BsCheck2Circle, BsPlusCircle} from "react-icons/bs";
 import Currency from "../../utils/Currency.tsx";
 import {createSales} from "../../service/SalesService.ts";
 import {apiDateFormat} from "../../utils/DateFormatter.ts";
+import DefaultDatePicker from "../../utils/DatePicker.tsx";
 
 type SalesAddModalProps = {
     show: boolean,
@@ -15,6 +16,7 @@ type SalesAddModalProps = {
 }
 
 type SalesForm = {
+    date: Date,
     customer: string,
     address: string,
     logistic: string,
@@ -47,14 +49,13 @@ export default function SalesAddModal({show, onCancel, refreshSales}: SalesAddMo
         packingFeePaid: 0,
     });
     const [adminFeePercentage, setAdminFeePercentage] = useState(0);
-    const [salesForm, setSalesForm] = useState<SalesForm>({customer: "", address: "", logistic: ""})
+    const [salesForm, setSalesForm] = useState<SalesForm>({customer: "", address: "", logistic: "", date: new Date()})
     const [salesDetails] = useState<SalesDetail[]>([])
     const {products} = useFetchProducts();
 
     const handleSubmit = async () => {
-        const date = apiDateFormat(new Date());
         await createSales({
-            date: date,
+            date: apiDateFormat(salesForm.date),
             customer: salesForm.customer,
             address: salesForm.address,
             logistic: salesForm.logistic,
@@ -82,6 +83,13 @@ export default function SalesAddModal({show, onCancel, refreshSales}: SalesAddMo
         setSalesForm(prevForm => ({
             ...prevForm,
             [name]: value
+        }))
+    }
+
+    const handleDateChange = (date: Date | null) => {
+        setSalesForm(prevForm => ({
+            ...prevForm,
+            date: date ?? new Date(),
         }))
     }
 
@@ -170,6 +178,14 @@ export default function SalesAddModal({show, onCancel, refreshSales}: SalesAddMo
                 <Form>
                     <Row>
                         <Col sm={12}>
+                            <Form.Group as={Row} className="mb-3">
+                                <Form.Label column sm={2}> Tanggal</Form.Label>
+                                <Col sm={10}>
+                                    <DefaultDatePicker name="date"
+                                                       selectedDate={salesForm.date}
+                                                       onChange={handleDateChange} />
+                                </Col>
+                            </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                                 <Form.Label column sm={2}>Pembeli</Form.Label>
                                 <Col sm={10}>
