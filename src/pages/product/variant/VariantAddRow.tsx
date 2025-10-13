@@ -1,6 +1,6 @@
 import {Button, Col, Form, FormGroup, ListGroup, Row} from "react-bootstrap";
 import React, {useState} from "react";
-import {BsCheck2Circle} from "react-icons/bs";
+import {BsCheck2Circle, BsCrosshair, BsCrosshair2, BsXCircle} from "react-icons/bs";
 import {createVariant} from "../../../service/VariantService.ts";
 
 type VariantAddRowProps = {
@@ -69,10 +69,10 @@ export default function VariantAddRow({productId, onCancel, refreshProduct} : Va
                         <FormGroup as={Row} className="mb-3">
                             <Col sm={{ span: 9, offset: 3 }} className="d-flex gap-2">
                                 <Button variant={"outline-primary"} onClick={handleSave}>
-                                    Simpan<BsCheck2Circle/>
+                                    Simpan <BsCheck2Circle/>
                                 </Button>
                                 <Button variant={"outline-secondary"} onClick={handleCancel}>
-                                    Batal<BsCheck2Circle/>
+                                    Batal <BsXCircle/>
                                 </Button>
                             </Col>
                         </FormGroup>

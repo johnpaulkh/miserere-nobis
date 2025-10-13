@@ -31,7 +31,25 @@ async function createProduct(product: Product): Promise<Product> {
     return createdProductData;
 }
 
+async function updateProduct(product: Product): Promise<Product> {
+    const response = await fetch(`${API_URL}/${product.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(product),
+    });
+
+    if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Failed to update product: ${response.status} - ${errorText}`);
+    }
+
+    const updatedProductData = await response.json();
+    console.log("Product updated successfully:", updatedProductData);
+    return updatedProductData;
+}
+
 export {
     fetchProducts,
     createProduct,
+    updateProduct,
 }

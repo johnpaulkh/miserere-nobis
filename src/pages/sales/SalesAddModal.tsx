@@ -183,7 +183,7 @@ export default function SalesAddModal({show, onCancel, refreshSales}: SalesAddMo
                                 <Col sm={10}>
                                     <DefaultDatePicker name="date"
                                                        selectedDate={salesForm.date}
-                                                       onChange={handleDateChange} />
+                                                       onChange={handleDateChange}/>
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
@@ -232,35 +232,36 @@ export default function SalesAddModal({show, onCancel, refreshSales}: SalesAddMo
                             <Form.Group as={Row} className="mb-3">
                                 <Form.Label column sm={3}>Jumlah</Form.Label>
                                 <Col sm={9}>
-                                    <Form.Control name="quantity" value={salesDetailForm.quantity}
+                                    <Form.Control name="quantity" type="number" value={salesDetailForm.quantity}
                                                   onChange={handleSalesDetailFormChange}/>
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                                 <Form.Label column sm={3}>Harga Jual</Form.Label>
                                 <Col sm={9}>
-                                    <Form.Control name="quantity" value={salesDetailForm.price}
+                                    <Form.Control name="price" type="number" value={salesDetailForm.price}
                                                   onChange={handleSalesDetailFormChange}/>
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                                 <Form.Label column sm={3}>Biaya Admin</Form.Label>
                                 <Col sm={9}>
-                                    <Form.Control name="adminFee" value={salesDetailForm.adminFee}
+                                    <Form.Control name="adminFee" type="number" value={salesDetailForm.adminFee}
                                                   onChange={handleSalesDetailFormChange}/>
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                                 <Form.Label column sm={3}>Biaya Pengemasan</Form.Label>
                                 <Col sm={9}>
-                                    <Form.Control name="packingFee" value={salesDetailForm.packingFee}
+                                    <Form.Control name="packingFee" type="number" value={salesDetailForm.packingFee}
                                                   onChange={handleSalesDetailFormChange}/>
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                                 <Form.Label column sm={3}>Pengemasan Dibayar</Form.Label>
                                 <Col sm={9}>
-                                    <Form.Control name="packingFeePaid" value={salesDetailForm.packingFeePaid}
+                                    <Form.Control name="packingFeePaid" type="number"
+                                                  value={salesDetailForm.packingFeePaid}
                                                   onChange={handleSalesDetailFormChange}/>
                                 </Col>
                             </Form.Group>
