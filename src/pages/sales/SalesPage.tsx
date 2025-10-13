@@ -40,6 +40,10 @@ export default function SalesPage() {
     const {sales, isLoading, error, refreshSales, startDate, setStartDate, endDate, setEndDate} = useFetchSales();
     const [showAddSales, setShowAddSales] = useState(false);
 
+    useEffect(() => {
+        document.title = 'Sales | Miserere';
+    }, []);
+
     if (isLoading) {
         return <Container className="py-4"><p>Memuat sales...</p></Container>;
     }

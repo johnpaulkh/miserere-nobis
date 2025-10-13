@@ -150,6 +150,10 @@ export default function DashBoardPage() {
         refreshSales().then();
     }
 
+    useEffect(() => {
+        document.title = 'Dashboard | Miserere';
+    }, []);
+
     if (isLoading) {
         return <Container className="py-4"><p>Memuat sales summary...</p></Container>;
     }

@@ -1,6 +1,6 @@
 import {Button, Col, Form, FormGroup, ListGroup, Row} from "react-bootstrap";
 import React, {useState} from "react";
-import {BsCheck2Circle, BsCrosshair, BsCrosshair2, BsXCircle} from "react-icons/bs";
+import {BsCheck2Circle, BsXCircle} from "react-icons/bs";
 import {createVariant} from "../../../service/VariantService.ts";
 
 type VariantAddRowProps = {

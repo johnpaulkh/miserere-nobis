@@ -1,5 +1,5 @@
 import {Col, Container, Row} from "react-bootstrap";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import ProductList from "./ProductList.tsx";
 import ProductAddButton from "./ProductAddButton.tsx";
 import ProductAddModal from "./ProductAddModal.tsx";
@@ -8,6 +8,10 @@ import {useFetchProducts} from "../../manager/ProductManager.ts";
 export default function ProductPage() {
     const {products, isLoading, error, refreshProducts} = useFetchProducts();
     const [showAddProduct, setShowAddProduct] = useState(false);
+
+    useEffect(() => {
+        document.title = 'Produk | Miserere';
+    }, []);
 
     if (isLoading) {
         return <Container className="py-4"><p>Memuat produk...</p></Container>;
