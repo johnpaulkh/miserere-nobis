@@ -18,6 +18,24 @@ export type SalesDetailCreateRequest = {
     quantity: number,
     price: number,
     cogs: number,
+    adminFee: number,
+    packingFee: number,
+    packingFeePaid: number,
+}
+
+export type SalesSummary = {
+    summary: DailySalesSummary,
+    dailySummaries: Map<string, DailySalesSummary>
+}
+
+export type DailySalesSummary = {
+    totalPrice: number,
+    totalCogs: number,
+    totalQuantity: number,
+    totalAdminFee: number,
+    totalPackingFee: number,
+    totalPackingFeePaid: number,
+    income: number,
 }
 
 async function fetchSales(startDate: Date, endDate: Date): Promise<(Paginated<Sales> | null)> {
@@ -26,8 +44,21 @@ async function fetchSales(startDate: Date, endDate: Date): Promise<(Paginated<Sa
         if (startDate) params.append('startDate', apiDateFormat(startDate));
         if (endDate) params.append('endDate', apiDateFormat(endDate));
 
-
         const response = await fetch(`${API_URL}?${params.toString()}`);
+        return await response.json();
+    } catch (err) {
+        console.error("Failed to fetch products:", err);
+        return null;
+    }
+}
+
+async function fetchSalesSummary(startDate: Date, endDate: Date): Promise<SalesSummary | null> {
+    try {
+        const params = new URLSearchParams();
+        if (startDate) params.append('startDate', apiDateFormat(startDate));
+        if (endDate) params.append('endDate', apiDateFormat(endDate));
+
+        const response = await fetch(`${API_URL}/summary?${params.toString()}`);
         return await response.json();
     } catch (err) {
         console.error("Failed to fetch products:", err);
@@ -54,5 +85,6 @@ async function createSales(request: SalesCreateRequest) {
 
 export {
     fetchSales,
+    fetchSalesSummary,
     createSales
 };

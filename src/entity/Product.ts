@@ -1,6 +1,7 @@
 export type Product = {
     id: string | null,
     name: string;
+    adminFeePercentage: number;
     variants: Variant[];
 }
 

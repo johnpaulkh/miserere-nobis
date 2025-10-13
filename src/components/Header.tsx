@@ -9,7 +9,6 @@ export default function Header() {
                 <Nav className="ms-auto">
                     <Nav.Link href="/products">Produk</Nav.Link>
                     <Nav.Link href="/sales">Penjualan</Nav.Link>
-                    <Nav.Link href="/extras">Tambahan</Nav.Link>
                 </Nav>
             </Container>
         </Navbar>

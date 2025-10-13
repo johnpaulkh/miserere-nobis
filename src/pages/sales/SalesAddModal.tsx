@@ -28,7 +28,7 @@ type SalesDetail = {
     quantity: number,
     price: number,
     cogs: number,
-    adminFee: number,
+    adminFee: string,
     packingFee: number,
     packingFeePaid: number,
 }
@@ -39,13 +39,14 @@ export default function SalesAddModal({show, onCancel, refreshSales}: SalesAddMo
         productName: "",
         variantId: "",
         variantName: "",
-        quantity: 0,
+        quantity: 1,
         price: 0,
         cogs: 0,
-        adminFee: 0,
+        adminFee: "0",
         packingFee: 0,
         packingFeePaid: 0,
     });
+    const [adminFeePercentage, setAdminFeePercentage] = useState(0);
     const [salesForm, setSalesForm] = useState<SalesForm>({customer: "", address: "", logistic: ""})
     const [salesDetails] = useState<SalesDetail[]>([])
     const {products} = useFetchProducts();
@@ -63,7 +64,7 @@ export default function SalesAddModal({show, onCancel, refreshSales}: SalesAddMo
                 quantity: sd.quantity,
                 price: sd.price,
                 cogs: sd.cogs,
-                adminFee: sd.adminFee,
+                adminFee: parseFloat(sd.adminFee),
                 packingFee: sd.packingFee,
                 packingFeePaid: sd.packingFeePaid,
             }))
@@ -86,20 +87,22 @@ export default function SalesAddModal({show, onCancel, refreshSales}: SalesAddMo
 
     const handleSalesDetailFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const {name, value} = e.target;
+
         setSalesDetailForm(prevForm => ({
             ...prevForm,
             [name]: value
         }));
 
         if (name === "productId") {
-            const productName = products
-                .filter(p => p.id === value)
-                .map(p => (p.name))?.[0] ?? "";
+            const product = products
+                .filter(p => p.id === value)?.[0];
+            const productName = product?.name ?? "";
             setSalesDetailForm(prevForm => ({
                 ...prevForm,
                 price: 0,
                 productName: productName,
             }));
+            setAdminFeePercentage(product?.adminFeePercentage ?? 0);
         }
 
         if (name === "variantId") {
@@ -112,8 +115,19 @@ export default function SalesAddModal({show, onCancel, refreshSales}: SalesAddMo
             setSalesDetailForm(prevForm => ({
                 ...prevForm,
                 price: price,
+                adminFee: (price * (adminFeePercentage / 100) * salesDetailForm.quantity).toFixed(2),
                 variantName: variantName,
                 cogs: cogs,
+            }));
+        }
+
+        if (name === "quantity") {
+            const quantity = parseInt(value);
+            setSalesDetailForm(prevForm => ({
+                ...prevForm,
+                adminFee: !isNaN(quantity)
+                    ? (salesDetailForm.price * (adminFeePercentage / 100) * quantity).toFixed(2)
+                    : salesDetailForm.adminFee,
             }));
         }
     }
@@ -138,10 +152,10 @@ export default function SalesAddModal({show, onCancel, refreshSales}: SalesAddMo
             productName: "",
             variantId: "",
             variantName: "",
-            quantity: 0,
+            quantity: 1,
             price: 0,
             cogs: 0,
-            adminFee: 0,
+            adminFee: "0",
             packingFee: 0,
             packingFeePaid: 0,
         })
@@ -159,19 +173,22 @@ export default function SalesAddModal({show, onCancel, refreshSales}: SalesAddMo
                             <Form.Group as={Row} className="mb-3">
                                 <Form.Label column sm={2}>Pembeli</Form.Label>
                                 <Col sm={10}>
-                                    <Form.Control name="customer" value={salesForm.customer} onChange={handleSalesFormChange} />
+                                    <Form.Control name="customer" value={salesForm.customer}
+                                                  onChange={handleSalesFormChange}/>
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                                 <Form.Label column sm={2}>Alamat</Form.Label>
                                 <Col sm={10}>
-                                    <Form.Control name="address" value={salesForm.address} onChange={handleSalesFormChange} />
+                                    <Form.Control name="address" value={salesForm.address}
+                                                  onChange={handleSalesFormChange}/>
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                                 <Form.Label column sm={2}>Logistik</Form.Label>
                                 <Col sm={10}>
-                                    <Form.Control name="logistic" value={salesForm.logistic} onChange={handleSalesFormChange} />
+                                    <Form.Control name="logistic" value={salesForm.logistic}
+                                                  onChange={handleSalesFormChange}/>
                                 </Col>
                             </Form.Group>
                         </Col>

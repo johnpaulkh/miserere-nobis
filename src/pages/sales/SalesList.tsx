@@ -19,11 +19,11 @@ export default function SalesList({sales}: SalesListProps) {
                             <th>Produk</th>
                             <th>Variant</th>
                             <th>Jumlah</th>
-                            <th>Harga Jual</th>
-                            <th>Harga Beli</th>
-                            <th>Admin</th>
-                            <th>Pengemasan</th>
-                            <th>Subsidi</th>
+                            <th className="text-end">Harga Jual</th>
+                            <th className="text-end">Harga Beli</th>
+                            <th className="text-end">Admin</th>
+                            <th className="text-end">Pengemasan</th>
+                            <th className="text-end">Pengemasan<br/>Terbayar</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -35,11 +35,11 @@ export default function SalesList({sales}: SalesListProps) {
                                     <td>{s.details[0].productName}</td>
                                     <td>{s.details[0].variantName}</td>
                                     <td>{s.details[0].quantity}</td>
-                                    <td><Currency value={s.details[0].price}/></td>
-                                    <td><Currency value={s.details[0].cogs}/></td>
-                                    <td><Currency value={s.details[0].adminFee}/></td>
-                                    <td><Currency value={s.details[0].packingFee}/></td>
-                                    <td><Currency value={s.details[0].packingFeePaid}/></td>
+                                    <td className="text-end"><Currency value={s.details[0].price}/></td>
+                                    <td className="text-end"><Currency value={s.details[0].cogs}/></td>
+                                    <td className="text-end"><Currency value={s.details[0].adminFee}/></td>
+                                    <td className="text-end"><Currency value={s.details[0].packingFee}/></td>
+                                    <td className="text-end"><Currency value={s.details[0].packingFeePaid}/></td>
                                 </tr>
                                 {s.details.map((sd, index) => (
                                     index > 0 && (
@@ -47,11 +47,11 @@ export default function SalesList({sales}: SalesListProps) {
                                             <td>{sd.productName}</td>
                                             <td>{sd.variantName}</td>
                                             <td>{sd.quantity}</td>
-                                            <td><Currency value={sd.price}/></td>
-                                            <td><Currency value={sd.cogs}/></td>
-                                            <td><Currency value={sd.adminFee}/></td>
-                                            <td><Currency value={sd.packingFee}/></td>
-                                            <td><Currency value={sd.packingFeePaid}/></td>
+                                            <td className="text-end"><Currency value={sd.price}/></td>
+                                            <td className="text-end"><Currency value={sd.cogs}/></td>
+                                            <td className="text-end"><Currency value={sd.adminFee}/></td>
+                                            <td className="text-end"><Currency value={sd.packingFee}/></td>
+                                            <td className="text-end"><Currency value={sd.packingFeePaid}/></td>
                                         </tr>
                                     )
                                 ))}

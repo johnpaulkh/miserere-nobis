@@ -14,6 +14,7 @@ type ProductAddModalProps = {
 
 type ProductForm = {
     name: string,
+    adminFeePercentage: number,
     variants: VariantForm[],
 }
 
@@ -24,7 +25,7 @@ type VariantForm = {
 }
 
 export default function ProductAddModal({show, onCancel, refreshProduct}: ProductAddModalProps) {
-    const [form, setForm] = useState<ProductForm>({name: "", variants: []});
+    const [form, setForm] = useState<ProductForm>({name: "", adminFeePercentage: 0, variants: []});
     const [variantForm, setVariantForm] = useState<VariantForm>({name: "", price: 0, cogs: 0})
     const [showAddVariant, setShowAddVariant] = useState(false);
 
@@ -48,6 +49,7 @@ export default function ProductAddModal({show, onCancel, refreshProduct}: Produc
         setForm({
             name: "",
             variants: [],
+            adminFeePercentage: 0,
         })
     }
 
@@ -57,6 +59,7 @@ export default function ProductAddModal({show, onCancel, refreshProduct}: Produc
         await createProduct({
             id: null,
             name: form.name,
+            adminFeePercentage: form.adminFeePercentage,
             variants: form.variants.map((v): Variant => ({
                 id: null,
                 productId: null,
@@ -87,6 +90,7 @@ export default function ProductAddModal({show, onCancel, refreshProduct}: Produc
         variants.push(variantForm);
         setForm({
             name: form.name,
+            adminFeePercentage: form.adminFeePercentage,
             variants: variants,
         })
         resetVariantForm();
@@ -153,6 +157,16 @@ export default function ProductAddModal({show, onCancel, refreshProduct}: Produc
                                     <Form.Label column sm={3}>Nama</Form.Label>
                                     <Col sm={9}>
                                         <Form.Control name="name" value={form.name} onChange={handleChange}/>
+                                    </Col>
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <Form.Group as={Row} className="mb-3">
+                                    <Form.Label column sm={3}>Persentase Admin Fee</Form.Label>
+                                    <Col sm={9}>
+                                        <Form.Control name="adminFeePercentage" value={form.adminFeePercentage} onChange={handleChange}/>
                                     </Col>
                                 </Form.Group>
                             </Col>
