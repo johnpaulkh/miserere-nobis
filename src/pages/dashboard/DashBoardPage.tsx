@@ -1,8 +1,9 @@
 import {Col, Container, Row} from "react-bootstrap";
 import DefaultDatePicker from "../../utils/DatePicker.tsx";
 import {useCallback, useEffect, useState} from "react";
-import {fetchSalesSummary, type SalesSummary, SalesSummaryYeah} from "../../service/SalesService.ts";
-import Currency from "../../utils/Currency.tsx";
+import {fetchSalesSummary, type SalesSummary} from "../../service/SalesService.ts";
+import DailySummaryTable from "./DailySummaryTable.tsx";
+import SummaryTable from "./SummaryTable.tsx";
 
 const useFetchSalesSummary = () => {
     const [salesSummary, setSalesSummary] = useState<SalesSummary | null>(null);
@@ -42,93 +43,6 @@ const useFetchSalesSummary = () => {
         setEndDate
     };
 };
-
-function summaryTable(salesSummary: SalesSummary | null) {
-    if (salesSummary === null || salesSummary.summary === null) return <></>
-
-    const summary = salesSummary.summary
-    return (
-        <table className="table table-sm border rounded-5">
-            <tbody>
-            <tr>
-                <th className="p-2">Total Barang Terjual</th>
-                <td className="text-end"><Currency
-                    value={summary.totalQuantity}/></td>
-            </tr>
-            <tr>
-                <th className="p-2">Total Penjualan</th>
-                <td className="text-end"><Currency value={summary.totalPrice}/>
-                </td>
-            </tr>
-            <tr>
-                <th className="p-2">Total Harga Beli</th>
-                <td className="text-end"><Currency value={summary.totalCogs}/>
-                </td>
-            </tr>
-            <tr>
-                <th className="p-2">Total Biaya Admin</th>
-                <td className="text-end"><Currency
-                    value={summary.totalAdminFee}/></td>
-            </tr>
-            <tr>
-                <th className="p-2">Total Biaya Pengemasan</th>
-                <td className="text-end"><Currency
-                    value={summary.totalPackingFee}/></td>
-            </tr>
-            <tr>
-                <th className="p-2">Total Biaya Pengemasan Terbayar</th>
-                <td className="text-end"><Currency
-                    value={summary.totalPackingFeePaid}/></td>
-            </tr>
-            <tr>
-                <th className="p-2">Total Pendapatan</th>
-                <td className="text-end"><Currency
-                    value={summary.income}/></td>
-            </tr>
-            </tbody>
-        </table>
-    )
-}
-
-function dailySummaryTable(salesSummary: SalesSummaryYeah | null) {
-    if (salesSummary === null || !salesSummary.dailySummaries) return <></>
-
-    const sortedDailySummaries = Object.entries(salesSummary.dailySummaries || {})
-        .sort((a, b) => a[0].localeCompare(b[0]));
-
-    return (
-        <table className="table table-sm border rounded-5">
-            <thead>
-            <tr>
-                <th>Tanggal</th>
-                <th>Barang Terjual</th>
-                <th className="text-end">Penjualan</th>
-                <th className="text-end">Harga Beli</th>
-                <th className="text-end">Biaya Admin</th>
-                <th className="text-end">Biaya Pengemasan</th>
-                <th className="text-end">Pengemasan Dibayar</th>
-                <th className="text-end">Pendapatan</th>
-            </tr>
-            </thead>
-            <tbody>
-            {
-                sortedDailySummaries.map(([dateKey, summary]) => (
-                    <tr>
-                        <td>{dateKey}</td>
-                        <td>{summary.totalQuantity}</td>
-                        <td className="text-end"><Currency value={summary.totalPrice}/></td>
-                        <td className="text-end"><Currency value={summary.totalCogs}/></td>
-                        <td className="text-end"><Currency value={summary.totalAdminFee}/></td>
-                        <td className="text-end"><Currency value={summary.totalPackingFee}/></td>
-                        <td className="text-end"><Currency value={summary.totalPackingFeePaid}/></td>
-                        <td className="text-end"><Currency value={summary.income}/></td>
-                    </tr>
-                ))
-            }
-            </tbody>
-        </table>
-    )
-}
 
 export default function DashBoardPage() {
     const {
@@ -181,13 +95,13 @@ export default function DashBoardPage() {
             <Row>
                 <Col sm={3}></Col>
                 <Col sm={6}>
-                    {summaryTable(salesSummary)}
+                    <SummaryTable salesSummary={salesSummary} />
                 </Col>
             </Row>
             <hr/>
             <Row>
                 <Col>
-                    {dailySummaryTable(salesSummary)}
+                    <DailySummaryTable salesSummary={salesSummary} />
                 </Col>
             </Row>
         </Container>
