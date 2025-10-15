@@ -24,8 +24,18 @@ export type SalesDetailCreateRequest = {
 }
 
 export type SalesSummary = {
-    summary: DailySalesSummary,
-    dailySummaries: Map<string, DailySalesSummary>
+    summary: DailySalesSummary | null,
+    dailySummaries: Map<string, DailySalesSummary> | null
+}
+
+export class SalesSummaryYeah implements SalesSummary {
+    summary: DailySalesSummary | null;
+    dailySummaries: Map<string, DailySalesSummary> | null;
+
+    constructor() {
+        this.summary = null
+        this.dailySummaries = null
+    }
 }
 
 export type DailySalesSummary = {
@@ -52,7 +62,7 @@ async function fetchSales(startDate: Date, endDate: Date): Promise<(Paginated<Sa
     }
 }
 
-async function fetchSalesSummary(startDate: Date, endDate: Date): Promise<SalesSummary | null> {
+async function fetchSalesSummary(startDate: Date, endDate: Date): Promise<SalesSummaryYeah | null> {
     try {
         const params = new URLSearchParams();
         if (startDate) params.append('startDate', apiDateFormat(startDate));

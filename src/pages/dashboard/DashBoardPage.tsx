@@ -1,7 +1,7 @@
 import {Col, Container, Row} from "react-bootstrap";
 import DefaultDatePicker from "../../utils/DatePicker.tsx";
 import {useCallback, useEffect, useState} from "react";
-import {fetchSalesSummary, type SalesSummary} from "../../service/SalesService.ts";
+import {fetchSalesSummary, type SalesSummary, SalesSummaryYeah} from "../../service/SalesService.ts";
 import Currency from "../../utils/Currency.tsx";
 
 const useFetchSalesSummary = () => {
@@ -44,9 +44,9 @@ const useFetchSalesSummary = () => {
 };
 
 function summaryTable(salesSummary: SalesSummary | null) {
-    if (salesSummary === null) return <></>
+    if (salesSummary === null || salesSummary.summary === null) return <></>
 
-    const summary = salesSummary?.summary
+    const summary = salesSummary.summary
     return (
         <table className="table table-sm border rounded-5">
             <tbody>
@@ -90,13 +90,11 @@ function summaryTable(salesSummary: SalesSummary | null) {
     )
 }
 
-function dailySummaryTable(salesSummary: SalesSummary | null) {
-    if (salesSummary === null || salesSummary.dailySummaries === undefined) return <></>
+function dailySummaryTable(salesSummary: SalesSummaryYeah | null) {
+    if (salesSummary === null || !salesSummary.dailySummaries) return <></>
 
-    const sortedDailySummaryMap = new Map(
-        Object.entries(salesSummary.dailySummaries || {})
-            .sort((a, b) => a[0].localeCompare(b[0]))
-    );
+    const sortedDailySummaries = Object.entries(salesSummary.dailySummaries || {})
+        .sort((a, b) => a[0].localeCompare(b[0]));
 
     return (
         <table className="table table-sm border rounded-5">
@@ -114,7 +112,7 @@ function dailySummaryTable(salesSummary: SalesSummary | null) {
             </thead>
             <tbody>
             {
-                [...sortedDailySummaryMap].map(([dateKey, summary]) => (
+                sortedDailySummaries.map(([dateKey, summary]) => (
                     <tr>
                         <td>{dateKey}</td>
                         <td>{summary.totalQuantity}</td>
